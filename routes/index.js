@@ -3,7 +3,8 @@ var router = express.Router();
 //数据操作对象
 var User = require('../public/javascripts/user');
 var log4js = require("log4js");
-var logger = log4js.getLogger();
+log4js.configure('conf/log4js_conf.json');
+var loginLogger = log4js.getLogger("login");
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -28,8 +29,8 @@ router.all('/login2', function(req, res, next) {
 			}else{
 				result="用户名或密码错误请重试";
 			}
-			logger.info("hello--login3..")
-			console.log("-login2-userName:"+req.body.uname+"--"+result+"--pass:"+req.body.pwd);
+			loginLogger.info("--userName:"+req.body.uname+"--pass:"+req.body.pwd+"--"+result);
+//			console.log("-login2-userName:"+req.body.uname+"--"+result+"--pass:"+req.body.pwd);
 			res.json({"result":result});
 	})  
 });
