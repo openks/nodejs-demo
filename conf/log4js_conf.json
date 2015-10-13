@@ -7,21 +7,21 @@
             "type": "file",
             "filename": "logs/login.log",
             "category": "login",
-            "maxLogSize": 2048,
+            "maxLogSize": 1048576,
             "backup": 3
         },
         {
             "type": "file",
             "filename": "logs/signup.log",
             "category": "signup",
-            "maxLogSize": 2048,
+            "maxLogSize": 1048576,
             "backup": 3
         },
         {
             "type": "file",
             "filename": "logs/log4jsLog.log",
             "category": "log4jsLog",
-            "maxLogSize": 2048,
+            "maxLogSize": 1048576,
             "backup": 3
         }
     ],

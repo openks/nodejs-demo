@@ -1,4 +1,5 @@
 var express = require('express');
+var SHA256 = require("crypto-js/sha256");
 var router = express.Router();
 //数据操作对象
 var User = require('../public/javascripts/user');
@@ -24,15 +25,13 @@ router.get('/users', function(req, res, next) {
 router.all('/login2', function(req, res, next) {
 		User.find({"userName":req.body.uname,"passWord":req.body.pwd}).exec(function(err,data){
 			var result;
-			if(data.length==1){
+			if(data.length!=0){
 				result="登陆成功！！";
 			}else{
 				result="用户名或密码错误请重试";
 			}
-			loginLogger.info("--userName:"+req.body.uname+"--pass:"+req.body.pwd+"--"+result);
-//			console.log("-login2-userName:"+req.body.uname+"--"+result+"--pass:"+req.body.pwd);
+			loginLogger.info("--userName:"+req.body.uname+"--"+result);
 			res.json({"result":result});
 	})  
 });
-
 module.exports = router;
