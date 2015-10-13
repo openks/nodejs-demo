@@ -58,5 +58,6 @@ app.use(function(err, req, res, next) {
   });
 });
 
+app.use(log4js.connectLogger(logger, { level: 'auto', format: ':method :url :status :response-time ms - :res[content-length]' }));
 
 module.exports = app;

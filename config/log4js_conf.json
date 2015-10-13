@@ -1,0 +1,25 @@
+{
+"appenders":[
+{"type":"console"},
+{"type":"file","filename":"logs/login.log","category":"login","maxLogSize":2048,"backup":3},
+{"type":"file","filename":"logs/signup.log","category":"signup","maxLogSize":2048,"backup":3},
+{"type":"file","filename":"logs/defalut.log","maxLogSize":2048,"backup":3},
+],
+"levels":{
+"login":"INFO",
+"signup":"INFO"
+}
+}
+
+
+//// 使用说明：
+//var log4js = require("log4js");
+//log4js.configure(__dirname + '/conf/log4js_conf.json’)
+//var loginLoger = log4js.getLogger('login');
+////可重新设置级别
+//loginLoger.setLevel("INFO");
+//loginLoger.info("loginInfo--log");
+////如何使用log4js输出http log
+//app.use(log4js.connectLogger(logger, { level: 'auto', format: ':method :url :status :response-time ms - :res[content-length]' }));
+
+ 
