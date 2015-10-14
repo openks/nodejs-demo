@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>用户登录</title>
+		<title>用户列表</title>
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1">
 		<link rel="shortcut icon" href="/favicon.ico">
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -17,8 +17,6 @@
 	</head>
 
 	<body>
-		<!-- 你的html代码 -->
-
 		<div class="page">
 
 			<header class="bar bar-nav">
@@ -37,16 +35,14 @@
 				<div class="list-block">
 					<ul>
 						<% for(var i=0; i<user.length; i++) { %>
-							<!--		<li class="item-content item-link swipeout">
-							<div class="item-inner swipeout-content">-->
-							<li class="item-content item-link swipeout">
-								<div class="item-inner swipeout-content">
-									<div class="item-title">用户名：</div>
+							<li class="item-content  item-link">
+								<div class="item-media"></div>
+								<div class="item-inner">
+									<div class="item-title">用户名</div>
 									<div class="item-after">
 										<%= user[i].userName %>
 									</div>
 								</div>
-								<div class="swipeout-actions-right  swipeout-actions-opened"><a href="#" class="swipeout-delete">Delete</a></div>
 							</li>
 							<% } %>
 					</ul>
@@ -59,8 +55,26 @@
 		<script type='text/javascript' src='//g.alicdn.com/sui-mobile/sm/0.5.0/js/sm-extend.min.js' charset='utf-8'></script>
 		<script src="//libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 		<script type="text/javascript">
-			$(".list-block").on("click", ".item-inner", function() {
-				alert("hello");
+			$("#search").bind('keyup', function(event) {
+				event = document.all ? window.event : event;
+				if ((event.keyCode || event.which) == 13) {
+					Zepto.alert( $(this).val());
+					$.ajax({
+						type: "post",
+						url: "searchUsers",
+						dataType: 'json',
+						data: {
+							"uname": $(this).val(),
+						},
+						async: true, //设置为同步操作就可以给全局变量赋值成功 
+						success: function(data) {
+							console.log(data);
+						},
+						error: function(data) {
+							console.error(data);
+						}
+					});
+				}
 			});
 		</script>
 	</body>

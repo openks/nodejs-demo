@@ -63,7 +63,7 @@ router.all('/regiest', function(req, res, next) {
 	newUser.save(function(err, data) {
 		loginLogger.info("--userName:" + req.body.uname + "--" + result);
 		var result;
-		if (err.code == "11000") {
+		if (err!=null&&err.code == "11000") {
 			result = "用户名已存在！";
 		} else {
 			result = "注册成功！！";
