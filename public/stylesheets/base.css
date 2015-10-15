@@ -1,1 +1,7 @@
-
+.searchbar {
+	overflow: hidden;
+}
+.item-after .js-show-uBirthday {
+	height: 100%!important;
+	text-align: right;
+}

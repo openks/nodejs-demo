@@ -17,7 +17,7 @@
 	</head>
 
 	<body>
-		<div class="page">
+		<div class="page page-current" id="usersPage">
 
 			<header class="bar bar-nav">
 				<h1 class='title'>用户列表</h1>
@@ -33,50 +33,55 @@
 			</div>
 			<div class="content">
 				<div class="list-block">
-					<ul>
-						<% for(var i=0; i<user.length; i++) { %>
-							<li class="item-content  item-link">
-								<div class="item-media"></div>
-								<div class="item-inner">
-									<div class="item-title">用户名</div>
-									<div class="item-after">
-										<%= user[i].userName %>
-									</div>
-								</div>
-							</li>
-							<% } %>
+					<ul class="js-user-search-result">
 					</ul>
 				</div>
 			</div>
 		</div>
 
-		<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
-		<script type='text/javascript' src='//g.alicdn.com/sui-mobile/sm/0.5.0/js/sm.min.js' charset='utf-8'></script>
-		<script type='text/javascript' src='//g.alicdn.com/sui-mobile/sm/0.5.0/js/sm-extend.min.js' charset='utf-8'></script>
-		<script src="//libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-		<script type="text/javascript">
-			$("#search").bind('keyup', function(event) {
-				event = document.all ? window.event : event;
-				if ((event.keyCode || event.which) == 13) {
-					Zepto.alert( $(this).val());
-					$.ajax({
-						type: "post",
-						url: "searchUsers",
-						dataType: 'json',
-						data: {
-							"uname": $(this).val(),
-						},
-						async: true, //设置为同步操作就可以给全局变量赋值成功 
-						success: function(data) {
-							console.log(data);
-						},
-						error: function(data) {
-							console.error(data);
-						}
-					});
-				}
-			});
-		</script>
+		<div class="page" id="detailPage">
+
+			<header class="bar bar-nav">
+				<a class="icon icon-left pull-left user-detail-back"></a>
+				<h1 class='title'></h1>
+				<a class="icon icon-edit  pull-right"></a>
+			</header>
+			<div class="content">
+				<div class="list-block inset">
+					<ul>
+						<li class="item-content  item-link js-item-uname">
+							<div class="item-inner">
+								<div class="item-title">用户名</div>
+								<div class="item-after js-show-uName"></div>
+							</div>
+						</li>
+						<li class="item-content item-link js-item-uBirthday">
+							<div class="item-inner">
+								<div class="item-title">生&nbsp;日</div>
+								<div class="item-after ">
+									<input type="text" class="js-show-uBirthday"/>
+								</div>
+							</div>
+						</li>
+						<li class="item-content item-link js-item-age">
+							<div class="item-inner">
+								<div class="item-title">年&nbsp;龄</div>
+								<div class="item-after js-show-uAge"></div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+			<script type='text/javascript' src='//g.alicdn.com/sui-mobile/sm/0.5.0/js/sm.min.js' charset='utf-8'></script>
+			<script type='text/javascript' src='//g.alicdn.com/sui-mobile/sm/0.5.0/js/sm-extend.min.js' charset='utf-8'></script>
+			<script src="//libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+			<script src="/javascripts/util.js"></script>
+			<script src="/javascripts/showUsers.js"></script>
+			<script type="text/javascript">
+				
+			</script>
 	</body>
 
 </html>

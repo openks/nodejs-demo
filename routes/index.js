@@ -19,12 +19,9 @@ router.get('/login', function(req, res, next) {
 });
 //获取用户列表
 router.get('/users', function(req, res, next) {
-	User.find().exec(function(err, data) {
-		res.render('showUsers', {
-			user: data,
-			title: "用户列表"
-		})
-	})
+	res.render('showUsers', {
+		title: "用户列表"
+	});
 });
 router.get('/userDetail', function(req, res, next) {
 	var user = {};
@@ -33,7 +30,7 @@ router.get('/userDetail', function(req, res, next) {
 	user.age = 20;
 	res.render('userDetail', {
 		user: user,
-		title: user.userName+"的详细信息"
+		title: user.userName + "的详细信息"
 	})
 });
 //登录
@@ -63,13 +60,25 @@ router.all('/regiest', function(req, res, next) {
 	newUser.save(function(err, data) {
 		loginLogger.info("--userName:" + req.body.uname + "--" + result);
 		var result;
-		if (err!=null&&err.code == "11000") {
+		if (err != null && err.code == "11000") {
 			result = "用户名已存在！";
 		} else {
 			result = "注册成功！！";
 		}
 		res.json({
 			"result": result
+		});
+	})
+});
+//searchUsers
+router.all('/searchUsers', function(req, res, next) {
+	console.log(req.body.uname);
+	User.find({
+		"userName": new RegExp(req.body.uname),
+	}).exec(function(err, data) {
+		console.error(err);
+		res.json({
+			"result": data
 		});
 	})
 });
