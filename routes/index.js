@@ -82,4 +82,33 @@ router.all('/searchUsers', function(req, res, next) {
 		});
 	})
 });
+//修改用户名
+router.all('/editUser', function(req, res, next) {
+	console.log("修改用户信息：" + req.body.uid);
+	User.find({
+		"userName": req.body.uname,
+	}).exec(function(err, data) {
+		console.error(err);
+		if (data.length == 0) {
+			User.update({
+				_id: req.body.uid
+			}, {
+				$set: {
+					"userName": req.body.uname
+				}
+			}).exec(
+				function(err1, data1) {
+					res.json({
+						"result": "新用户名已保存！"
+					});
+				}
+			);
+		} else {
+			res.json({
+				"result": "用户名已存在！"
+			});
+		}
+
+	})
+});
 module.exports = router;

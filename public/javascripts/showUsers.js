@@ -42,33 +42,63 @@ $(function() {
 		var id = $(this).attr("data-id");
 		var obj = getObjByProperty("users", "_id", id, "s");
 		$("#detailPage .title,.js-show-uName").text(obj.userName);
-		$("#uname-change").val(obj.userName);
+		$("#uname-change").val(obj.userName).attr({
+			"data-uid": id,
+			"data-old": obj.userName
+		});
 		Zepto.router.loadPage("#detailPage");
 	});
 	//用户详情页返回按钮点击事件触发
 	$(".user-detail-back").on("click", function() {
-		Zepto.router.back("#usersPage")
+		Zepto.router.back("#usersPage");
 	});
 	//用户名修改页返回按钮点击事件触发
 	$(".user-uname-back").on("click", function() {
-		Zepto.router.back("#detailPage")
+		Zepto.router.back("#detailPage");
 	});
 	//用户详情页点击用户名行触发事件
-	$(".js-item-uname").on("click",  function() {
+	$(".js-item-uname").on("click", function() {
 		Zepto.router.loadPage("#unamePage");
 	});
-	//修改姓名
-	//	$(".js-item-uname").on("click", function() {
-	//		Zepto.prompt('请输入您的新名称', function(value) {
-	////			Zepto.alert('Your name is "' + value + '". You clicked Ok button');
-	//		}, function(value) {
-	////			Zepto.alert('Your name is "' + value + '". You clicked Cancel button');
-	//		});
-	//	});
 	//生日变化时计算年龄
 	$(".js-show-uBirthday").on("change", function() {
 		var year = parseInt((new Date() - new Date($(this).val())) / (365 * 24 * 60 * 60 * 1000), 10);
 		$(".js-show-uAge").val(year);
+	});
+	//用户名修改完成后保存
+	$("#bt-edit-uname").on("click", function() {
+		var newName = $("#uname-change").val(),
+			uid = $("#uname-change").attr("data-uid");
+		if (newName == $("#uname-change").attr("data-old")) {
+			Zepto.toast("用户名修改成功！");
+			return;
+		}
+		$.ajax({
+			type: "post",
+			url: "editUser",
+			dataType: 'json',
+			data: {
+				"uid": uid,
+				"uname": newName
+			},
+			async: true, //设置为同步操作就可以给全局变量赋值成功 
+			success: function(data) {
+				console.log(data);
+				if (data.result == "新用户名已保存！") {
+					$("#uname-change").attr("data-old", newName);
+					$(".js-detail-title,.js-show-uName").text(newName);
+					$("[data-id=" + uid + "]").find(".item-after").text(newName);
+					setObjByProperty("users", "_id", uid, "userName", newName, "s");
+					Zepto.toast("用户名修改成功！");
+					Zepto.router.back("#detailPage");
+				} else {
+					Zepto.toast(data.result);
+				}
+			},
+			error: function(data) {
+				console.error(data);
+			}
+		});
 	});
 	//picker
 	$(document).on("pageInit", "#detailPage", function(e, id, page) {
