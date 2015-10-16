@@ -44,7 +44,6 @@
 			<header class="bar bar-nav">
 				<a class="icon icon-left pull-left user-detail-back"></a>
 				<h1 class='title'></h1>
-				<a class="icon icon-edit  pull-right"></a>
 			</header>
 			<div class="content">
 				<div class="list-block inset">
@@ -55,6 +54,14 @@
 								<div class="item-after js-show-uName"></div>
 							</div>
 						</li>
+						<li class="item-content  item-link js-item-usex">
+							<div class="item-inner">
+								<div class="item-title">性别</div>
+								<div class="item-after">
+									<input type="text" class="js-show-usex" />
+								</div>
+							</div>
+						</li>
 						<li class="item-content item-link js-item-uBirthday">
 							<div class="item-inner">
 								<div class="item-title">生&nbsp;日</div>
@@ -63,25 +70,54 @@
 								</div>
 							</div>
 						</li>
-						<li class="item-content item-link js-item-age">
+						<li class="item-content js-item-age">
 							<div class="item-inner">
 								<div class="item-title">年&nbsp;龄</div>
-								<div class="item-after js-show-uAge"></div>
+								<div class="item-after">
+									<input type="text" class="js-show-uAge" />
+								</div>
 							</div>
 						</li>
 					</ul>
 				</div>
 			</div>
+		</div>
+		<div class="page" id="unamePage">
 
-			<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
-			<script type='text/javascript' src='//g.alicdn.com/sui-mobile/sm/0.5.0/js/sm.min.js' charset='utf-8'></script>
-			<script type='text/javascript' src='//g.alicdn.com/sui-mobile/sm/0.5.0/js/sm-extend.min.js' charset='utf-8'></script>
-			<script src="//libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-			<script src="/javascripts/util.js"></script>
-			<script src="/javascripts/showUsers.js"></script>
-			<script type="text/javascript">
-				
-			</script>
+			<header class="bar bar-nav">
+				<a class="icon icon-left pull-left user-uname-back"></a>
+				<h1 class='title'>用户名</h1>
+			</header>
+			<div class="content">
+				<div class="list-block inset">
+					<ul>
+						<li>
+							<div class="item-content">
+								<div class="item-inner">
+									<div class="item-input">
+										<input type="text" id="uname-change">
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+					<div class="content-block">
+						<div class="row">
+							<div class="col-100"><a href="#" class="button button-big button-fill button-danger" id="bt-reg">保存</a></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+		<script type='text/javascript' src='//g.alicdn.com/sui-mobile/sm/0.5.0/js/sm.min.js' charset='utf-8'></script>
+		<script type='text/javascript' src='//g.alicdn.com/sui-mobile/sm/0.5.0/js/sm-extend.min.js' charset='utf-8'></script>
+		<script src="//libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<script src="/javascripts/util.js"></script>
+		<script src="/javascripts/showUsers.js"></script>
+		<script type="text/javascript">
+		</script>
 	</body>
 
 </html>

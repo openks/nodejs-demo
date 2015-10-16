@@ -42,45 +42,50 @@ $(function() {
 		var id = $(this).attr("data-id");
 		var obj = getObjByProperty("users", "_id", id, "s");
 		$("#detailPage .title,.js-show-uName").text(obj.userName);
+		$("#uname-change").val(obj.userName);
 		Zepto.router.loadPage("#detailPage");
 	});
 	//用户详情页返回按钮点击事件触发
 	$(".user-detail-back").on("click", function() {
 		Zepto.router.back("#usersPage")
 	});
-	//修改姓名
-	$(".js-item-uname").on("click", function() {
-		Zepto.prompt('请输入您的新名称', function(value) {
-			Zepto.alert('Your name is "' + value + '". You clicked Ok button');
-		}, function(value) {
-			Zepto.alert('Your name is "' + value + '". You clicked Cancel button');
-		});
+	//用户名修改页返回按钮点击事件触发
+	$(".user-uname-back").on("click", function() {
+		Zepto.router.back("#detailPage")
 	});
-	//修改生日
-//	$(".js-item-uBirthday").on("click", function() {
-//			Zepto("#js-show-uBirthday").calendar();
-//	});
-	
-	  //picker
-  $(document).on("pageInit", "#detailPage", function(e, id, page) {
-    Zepto(".js-show-uBirthday").picker({
-      toolbarTemplate: '<header class="bar bar-nav">\
-        <button class="button button-link pull-left">\
-      按钮\
-      </button>\
+	//用户详情页点击用户名行触发事件
+	$(".js-item-uname").on("click",  function() {
+		Zepto.router.loadPage("#unamePage");
+	});
+	//修改姓名
+	//	$(".js-item-uname").on("click", function() {
+	//		Zepto.prompt('请输入您的新名称', function(value) {
+	////			Zepto.alert('Your name is "' + value + '". You clicked Ok button');
+	//		}, function(value) {
+	////			Zepto.alert('Your name is "' + value + '". You clicked Cancel button');
+	//		});
+	//	});
+	//生日变化时计算年龄
+	$(".js-show-uBirthday").on("change", function() {
+		var year = parseInt((new Date() - new Date($(this).val())) / (365 * 24 * 60 * 60 * 1000), 10);
+		$(".js-show-uAge").val(year);
+	});
+	//picker
+	$(document).on("pageInit", "#detailPage", function(e, id, page) {
+		Zepto(".js-show-usex").picker({
+			toolbarTemplate: '<header class="bar bar-nav">\
       <button class="button button-link pull-right close-picker">\
       确定\
       </button>\
-      <h1 class="title">标题</h1>\
+      <h1 class="title">请选择您的性别</h1>\
       </header>',
-      cols: [
-        {
-          textAlign: 'center',
-          values: ['iPhone 4', 'iPhone 4S', 'iPhone 5', 'iPhone 5S', 'iPhone 6', 'iPhone 6 Plus', 'iPad 2', 'iPad Retina', 'iPad Air', 'iPad mini', 'iPad mini 2', 'iPad mini 3']
-        }
-      ]
-    });
-  });
-  Zepto.init();
-	
+			cols: [{
+				textAlign: 'center',
+				values: ['男', '女', '保密']
+			}]
+		});
+		Zepto(".js-show-uBirthday").calendar();
+	});
+	Zepto.init();
+
 })
