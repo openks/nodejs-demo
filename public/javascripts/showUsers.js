@@ -60,6 +60,22 @@ $(function() {
 	$(".js-item-uname").on("click", function() {
 		Zepto.router.loadPage("#unamePage");
 	});
+	//用户详情页点击性别行触发事件
+	$(".js-item-uSex").on("click", function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		if (!e.target.classList.contains("js-show-uSex")) {
+			Zepto(".js-show-uSex").triggerHandler("click");
+		}
+	});
+	//用户详情页点击生日行触发事件
+	$(".js-item-uBirthday").on("click", function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		if (!e.target.classList.contains("js-show-uBirthday")) {
+			Zepto(".js-show-uBirthday").triggerHandler("click");
+		}
+	});
 	//生日变化时计算年龄
 	$(".js-show-uBirthday").on("change", function() {
 		var year = parseInt((new Date() - new Date($(this).val())) / (365 * 24 * 60 * 60 * 1000), 10);
@@ -102,7 +118,7 @@ $(function() {
 	});
 	//picker
 	$(document).on("pageInit", "#detailPage", function(e, id, page) {
-		Zepto(".js-show-usex").picker({
+		Zepto(".js-show-uSex").picker({
 			toolbarTemplate: '<header class="bar bar-nav">\
       <button class="button button-link pull-right close-picker">\
       确定\
@@ -114,8 +130,13 @@ $(function() {
 				values: ['男', '女', '保密']
 			}]
 		});
-		Zepto(".js-show-uBirthday").calendar();
+		$(".js-show-uBirthday").val("2010-01-01");
+		Zepto(".js-show-uBirthday").calendar({
+			maxDate: new Date(),
+			value:[$(".js-show-uBirthday").val()]
+		});
 	});
 	Zepto.init();
-
+	//设置默认值 性别默认设为女
+	Zepto(".js-show-uSex").picker("setValue", ["女"]);
 })

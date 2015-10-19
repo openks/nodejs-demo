@@ -3,5 +3,6 @@
 }
 .item-after input {
 	height: 100%!important;
+	width:5rem!important ;
 	text-align: right;
 }
