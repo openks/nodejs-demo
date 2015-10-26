@@ -37,6 +37,10 @@ $(function() {
 		});
 	};
 	getAndShowUsers();
+	//用户列表页点击返回跳转到主页
+	$(".js-users-back").on("click",  function() {
+		location.href="home";
+	});
 	//用户列表页点击用户所在行触发事件
 	$(".js-user-search-result").on("click", ".item-content", function() {
 		var id = $(this).attr("data-id");

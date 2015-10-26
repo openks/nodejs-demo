@@ -1,11 +1,15 @@
 var express = require('express');
 var SHA256 = require("crypto-js/sha256");
 var router = express.Router();
+
+var url = require('url');
 //数据操作对象
 var User = require('../public/javascripts/user');
 var log4js = require("log4js");
 log4js.configure('conf/log4js_conf.json');
 var loginLogger = log4js.getLogger("login");
+
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	res.render('index', {
@@ -13,12 +17,36 @@ router.get('/', function(req, res, next) {
 	});
 });
 router.get('/login', function(req, res, next) {
-	res.render('login', {
-		title: '登陆页'
-	});
+	if (JSON.stringify(req.session.user) == "{}") {
+		res.render('login', {
+			title: '登陆页'
+		});
+	} else {
+		res.redirect("/home");
+	}
 });
+//主页
+router.all('/home', function(req, res, next) {
+	if (JSON.stringify(req.session.user) == "{}") {
+		res.redirect("/login");
+	} else {
+		//		console.log("home::"+req.session.user.userName);
+		res.render('home', {
+			title: '用户已登录页',
+			user: req.session.user
+		});
+	}
+});
+
+function loginFilter(req, res, next) {
+	if (JSON.stringify(req.session.user) == "{}") {
+		res.redirect("/login");
+	}
+};
+
 //获取用户列表
 router.get('/users', function(req, res, next) {
+	loginFilter(req, res, next);
 	res.render('showUsers', {
 		title: "用户列表"
 	});
@@ -39,15 +67,19 @@ router.all('/login2', function(req, res, next) {
 		"userName": req.body.uname,
 		"passWord": req.body.pwd
 	}).exec(function(err, data) {
-		var result;
+		var result, code = 0;
 		if (data.length != 0) {
-			result = "登陆成功！！";
+			req.session.user = data[0];
+			console.log(JSON.stringify(data));
+			//			result = "登陆成功！！";
 		} else {
-			result = "用户名或密码错误请重试";
+			result = "用户名或密码错误请重试!";
+			code = "E001";
 		}
 		loginLogger.info("--userName:" + req.body.uname + "--" + result);
 		res.json({
-			"result": result
+			"result": result,
+			"code": code
 		});
 	})
 });
@@ -59,14 +91,16 @@ router.all('/regiest', function(req, res, next) {
 	});
 	newUser.save(function(err, data) {
 		loginLogger.info("--userName:" + req.body.uname + "--" + result);
-		var result;
+		var result, code = 0;
 		if (err != null && err.code == "11000") {
 			result = "用户名已存在！";
+			code = "E002";
 		} else {
 			result = "注册成功！！";
 		}
 		res.json({
-			"result": result
+			"result": result,
+			"code": code
 		});
 	})
 });
@@ -76,7 +110,7 @@ router.all('/searchUsers', function(req, res, next) {
 	User.find({
 		"userName": new RegExp(req.body.uname),
 	}).exec(function(err, data) {
-		console.error(err);
+		//		console.error(err);
 		res.json({
 			"result": data
 		});
@@ -84,11 +118,11 @@ router.all('/searchUsers', function(req, res, next) {
 });
 //修改用户名
 router.all('/editUser', function(req, res, next) {
-	console.log("修改用户信息：" + req.body.uid);
+	//	console.log("修改用户信息：" + req.body.uid);
 	User.find({
 		"userName": req.body.uname,
 	}).exec(function(err, data) {
-		console.error(err);
+		//		console.error(err);
 		if (data.length == 0) {
 			User.update({
 				_id: req.body.uid
@@ -99,13 +133,15 @@ router.all('/editUser', function(req, res, next) {
 			}).exec(
 				function(err1, data1) {
 					res.json({
-						"result": "新用户名已保存！"
+						"result": "新用户名已保存！",
+						"code": 0
 					});
 				}
 			);
 		} else {
 			res.json({
-				"result": "用户名已存在！"
+				"result": "用户名已存在！",
+				"code": "E002"
 			});
 		}
 

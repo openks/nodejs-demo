@@ -11,9 +11,25 @@ var log4js = require("log4js");
 log4js.configure(__dirname + '/conf/log4js_conf.json');
 var log4jslogger = log4js.getLogger("log4jsLog");
 
-
-
+//session操作
+var session = require('express-session');
+var url = require('url');
 var app = express();
+app.use(session({
+	secret: 'keyboard cat',
+	resave: false,
+	saveUninitialized: true
+}));
+
+app.use(function (req, res, next) {
+  var user = req.session.user;
+  if (!user) {
+    user = req.session.user = {};
+  }
+  next();
+})
+
+//var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
