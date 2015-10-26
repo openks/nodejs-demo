@@ -3,6 +3,45 @@
 }
 .item-after input {
 	height: 100%!important;
-	width:5rem!important ;
+	width: 5rem!important;
 	text-align: right;
+}
+.swiper-slide img {
+	width: 100%;
+}
+
+.swiper-container {
+	padding-bottom: 0;
+}
+.content-ul {
+	list-style: none;
+	padding: 0;
+	padding-bottom: 1.5rem;
+	margin: 0;
+	margin-top: 1.5rem;
+	border-top: 1px solid #CEC5c5;
+	border-left: 1px solid #eee;
+	overflow: hidden;
+}
+li.con-li {
+	display: block;
+	border-right: 1px solid #C5c5c5;
+	border-bottom: 1px solid #CEC5C5;
+	width: 33%;
+	text-align: center;
+	/* background-color: yellow; */
+	padding: 0.4rem 0.5rem;
+	float: left;
+	font-size: 2rem;
+}
+li.con-li:nth-child(3n-1) {
+	/* background-color:red; */
+	width: 34%;
+}
+.con-li a {
+	color: #000;
+}
+.con-li-text {
+	font-size: 0.7rem;
+	font-weight: 600;
 }

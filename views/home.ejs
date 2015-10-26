@@ -4,7 +4,9 @@
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title><%= title %></title>
+		<title>
+			<%= title %>
+		</title>
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1">
 		<link rel="shortcut icon" href="/favicon.ico">
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -25,12 +27,47 @@
 				<h1 class='title js-home-title'><%= user.userName %>,你好</h1>
 			</header>
 			<div class="content">
-				<div class="content-block">
-					<div class="row">
-						<div class="col-50"><a href="#" class="button button-big button-fill button-danger" id="bt-search">用户查找</a></div>
-						<div class="col-50"><a href="#" class="button button-big button-fill button-success" id="bt-login">登录</a></div>
+				<!-- Slider -->
+				<div class="swiper-container" data-space-between='10'>
+					<div class="swiper-wrapper">
+						<div class="swiper-slide"><img src="images/bg-1.png" alt="第一张"></div>
+						<div class="swiper-slide"><img src="images/bg-2.png" alt="第2张"></div>
+						<div class="swiper-slide"><img src="images/bg-3.png" alt="第3张"></div>
 					</div>
+					<div class="swiper-pagination"></div>
 				</div>
+				<ul class="content-ul">
+					<li class="con-li">
+						<a href="#" class="js-user-search"><span class="icon icon-search"></span>
+							<div class="con-li-text">查找用户</div>
+						</a>
+					</li>
+					<li class="con-li">
+						<a href="#"><span class="icon icon-search"></span>
+							<div class="con-li-text">修改密码</div>
+						</a>
+					</li>
+					<li class="con-li">
+						<a href="#"><span class="icon icon-search"></span>
+							<div class="con-li-text">查找用户</div>
+						</a>
+					</li>
+					<li class="con-li">
+						<a href="#"><span class="icon icon-search"></span>
+							<div class="con-li-text">查找用户</div>
+						</a>
+					</li>
+					<li class="con-li">
+						<a href="#"><span class="icon icon-search"></span>
+							<div class="con-li-text">查找用户</div>
+						</a>
+					</li>
+					<li class="con-li">
+						<a href="#" class="js-exit"><span class="icon icon-search"></span>
+							<div class="con-li-text">退出</div>
+						</a>
+					</li>
+				</ul>
 			</div>
 		</div>
 

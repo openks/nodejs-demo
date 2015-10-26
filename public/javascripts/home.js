@@ -1,5 +1,9 @@
 $(function() {
-	$("#bt-search").on("click", function() {
-		location.href = "users";
-	})
+	$(".js-exit").on("click", function() {
+		location.href="logout";
+	});
+	$(".js-user-search").on("click", function() {
+		location.href="users";
+	});
+	Zepto(".swiper-container").swiper();
 });

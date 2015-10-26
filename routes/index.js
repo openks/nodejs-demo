@@ -83,6 +83,13 @@ router.all('/login2', function(req, res, next) {
 		});
 	})
 });
+//退出
+router.all('/logout', function(req, res, next) {
+	req.session.destroy(function(err) {
+		// cannot access session here
+	});
+	res.redirect("/login");
+});
 //注册
 router.all('/regiest', function(req, res, next) {
 	var newUser = new User({
