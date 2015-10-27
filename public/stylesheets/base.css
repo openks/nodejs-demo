@@ -45,3 +45,7 @@ li.con-li:nth-child(3n-1) {
 	font-size: 0.7rem;
 	font-weight: 600;
 }
+
+.user-detail-edit {
+    display: none;
+}
