@@ -17,7 +17,9 @@ db.once('open', function() {
 var Schema = mongoose.Schema;
 var userSchema = new Schema({
 	userName : { type: String},
-	passWord : { type: String}
+	passWord : { type: String},
+	birthday : { type: String},
+	gender : { type: Number},
 })
 //第三个参数为connection的名字 即表名
 var User = mongoose.model('User', userSchema,'user');

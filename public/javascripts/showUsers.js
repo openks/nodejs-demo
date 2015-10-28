@@ -45,7 +45,6 @@ $(function() {
 	$(".js-user-search-result").on("click", ".item-content", function() {
 		var id = $(this).attr("data-id");
 		var obj = getObjByProperty("users", "_id", id, "s");
-		var sex;
 		$("#detailPage .title,.js-show-uName").text(obj.userName);
 		$(".js-show-uSex").val(SEX[obj.gender]).attr("data-old", obj.gender);
 		$(".js-show-uBirthday").val(obj.birthday).attr("data-old", obj.birthday);
@@ -105,6 +104,31 @@ $(function() {
 		editBtStatus();
 		$(".js-show-uAge").val(getYears($(this).val()));
 	});
+	//用户信息（性别生日等）修改
+	$(".user-detail-edit").on("click", function() {
+		var uid = $("#uname-change").attr("data-uid");
+		var param = {};
+		param.editType = "uInfo";
+		param.uid = uid;
+		param.birthday = $(".js-show-uBirthday").val();
+		param.gender = $(".js-show-uSex").attr("data-new");
+		$.ajax({
+			type: "post",
+			url: "editUser",
+			dataType: 'json',
+			data: param,
+			async: true, //设置为同步操作就可以给全局变量赋值成功 
+			success: function(data) {
+				console.log(data);
+			},
+			error: function(data) {
+				console.error(data);
+			}
+		});
+		$(this).css({
+			"display": "none"
+		})
+	});
 	//用户名修改完成后保存
 	$("#bt-edit-uname").on("click", function() {
 		var newName = $("#uname-change").val(),
@@ -119,6 +143,7 @@ $(function() {
 			dataType: 'json',
 			data: {
 				"uid": uid,
+				"editType": "uName",
 				"uname": newName
 			},
 			async: true, //设置为同步操作就可以给全局变量赋值成功 
@@ -130,7 +155,6 @@ $(function() {
 					$("[data-id=" + uid + "]").find(".item-after").text(newName);
 					setObjByProperty("users", "_id", uid, "userName", newName, "s");
 					Zepto.toast("用户名修改成功！");
-					Zepto.router.back("#detailPage");
 				} else {
 					Zepto.toast(data.result);
 				}
@@ -141,27 +165,30 @@ $(function() {
 		});
 	});
 	//picker
-	$(document).on("pageInit", "#detailPage", function(e, id, page) {
-		Zepto(".js-show-uSex").picker({
-			toolbarTemplate: '<header class="bar bar-nav">\
+	Zepto(".js-show-uSex").picker({
+		toolbarTemplate: '<header class="bar bar-nav">\
       <button class="button button-link pull-right close-picker">\
       确定\
       </button>\
       <h1 class="title">请选择您的性别</h1>\
       </header>',
-			cols: [{
-				textAlign: 'center',
-				values: ['男', '女', '保密']
-			}]
-		});
+		cols: [{
+			textAlign: 'center',
+			values: ['男', '女', '保密']
+		}]
+	}).picker("open").picker("close");
+	$(document).on("pageInit", "#detailPage", function(e, id, page) {
 		Zepto(".js-show-uBirthday").calendar({
 			maxDate: new Date(),
 			value: [$(".js-show-uBirthday").val()]
 		});
+		Zepto(".js-show-uSex").picker("setValue", [$(".js-show-uSex").val()]);
 	});
-	Zepto.init();
-	//设置默认值 性别默认设为女
-	//	Zepto(".js-show-uSex").picker("setValue", ["女"]);
+	$(document).on("pageAnimationEnd", "#detailPage", function(e, id, page) {
+		//		console.log("hide!!!!!!!!!!");
+		Zepto(".js-show-uBirthday").off("click");
+	});
+	//	Zepto.init();
 });
 /**
  * 根据年龄字符串获取年龄值
