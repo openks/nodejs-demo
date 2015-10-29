@@ -41,6 +41,9 @@ li.con-li:nth-child(3n-1) {
 .con-li a {
 	color: #000;
 }
+.con-li a:hover{
+	text-decoration:none;
+}
 .con-li-text {
 	font-size: 0.7rem;
 	font-weight: 600;

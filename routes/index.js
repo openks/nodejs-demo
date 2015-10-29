@@ -70,7 +70,7 @@ router.all('/login2', function(req, res, next) {
 		var result, code = 0;
 		if (data.length != 0) {
 			req.session.user = data[0];
-			console.log(JSON.stringify(data));
+			//			console.log(JSON.stringify(data));
 			//			result = "登陆成功！！";
 		} else {
 			result = "用户名或密码错误请重试!";
