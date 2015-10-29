@@ -37,6 +37,15 @@ router.all('/home', function(req, res, next) {
 		});
 	}
 });
+router.all('/editPassWord', function(req, res, next) {
+		if (JSON.stringify(req.session.user) == "{}") {
+			res.redirect("/login");
+		} else {
+			res.render('editPass', {
+				uid: req.session.user._id
+			});
+		}
+});
 
 function loginFilter(req, res, next) {
 	if (JSON.stringify(req.session.user) == "{}") {
@@ -61,6 +70,18 @@ router.get('/userDetail', function(req, res, next) {
 		title: user.userName + "的详细信息"
 	})
 });
+
+//退出
+router.all('/logout', function(req, res, next) {
+	req.session.destroy(function(err) {
+		// cannot access session here
+	});
+	res.redirect("/login");
+});
+
+
+
+
 //登录
 router.all('/login2', function(req, res, next) {
 	User.find({
@@ -83,13 +104,33 @@ router.all('/login2', function(req, res, next) {
 		});
 	})
 });
-//退出
-router.all('/logout', function(req, res, next) {
-	req.session.destroy(function(err) {
-		// cannot access session here
-	});
-	res.redirect("/login");
+//修改密码
+router.all('/editPwd', function(req, res, next) {
+	User.update({
+		"_id": req.body.uid,
+		"passWord": req.body.oldpwd,
+	}, {
+		$set: {
+			"passWord": req.body.newpwd,
+		}
+	}).exec(function(err, data) {
+		var result, code = 0;
+		console.log(data);
+		if (data['nModified'] == 1) {
+			result = "修改成功！";
+		} else if (data['n'] == 1) {
+			result = "原密码与新密码相同！";
+		} else {
+			result = "原密码错误请重试!";
+			code = "E002";
+		}
+		res.json({
+			"result": result,
+			"code": code
+		});
+	})
 });
+
 //注册
 router.all('/regiest', function(req, res, next) {
 	var newUser = new User({
@@ -101,7 +142,7 @@ router.all('/regiest', function(req, res, next) {
 		var result, code = 0;
 		if (err != null && err.code == "11000") {
 			result = "用户名已存在！";
-			code = "E002";
+			code = "E003";
 		} else {
 			result = "注册成功！！";
 		}
@@ -146,8 +187,8 @@ router.all('/editUser', function(req, res, next) {
 							});
 						} else {
 							res.json({
-								"result": "更新失败",
-								"code": "U002"
+								"result": "更新失败!",
+								"code": "E004"
 							});
 						}
 					}
@@ -155,7 +196,7 @@ router.all('/editUser', function(req, res, next) {
 			} else {
 				res.json({
 					"result": "用户名已存在！",
-					"code": "E002"
+					"code": "E003"
 				});
 			}
 		});
