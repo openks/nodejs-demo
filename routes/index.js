@@ -9,6 +9,13 @@ var log4js = require("log4js");
 log4js.configure('conf/log4js_conf.json');
 var loginLogger = log4js.getLogger("login");
 
+function loginFilter(req, res, next) {
+	if (JSON.stringify(req.session.user) == "{}") {
+		res.redirect("/login");
+	} else {
+		return true;
+	}
+};
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -27,38 +34,30 @@ router.get('/login', function(req, res, next) {
 });
 //主页
 router.all('/home', function(req, res, next) {
-	if (JSON.stringify(req.session.user) == "{}") {
-		res.redirect("/login");
-	} else {
-		//		console.log("home::"+req.session.user.userName);
+	if (loginFilter(req, res, next)) {
 		res.render('home', {
 			title: '用户已登录页',
 			user: req.session.user
 		});
 	}
+
 });
 router.all('/editPassWord', function(req, res, next) {
-		if (JSON.stringify(req.session.user) == "{}") {
-			res.redirect("/login");
-		} else {
-			res.render('editPass', {
-				uid: req.session.user._id
-			});
-		}
+	if (loginFilter(req, res, next)) {
+		res.render('editPass', {
+			uid: req.session.user._id
+		});
+	}
 });
 
-function loginFilter(req, res, next) {
-	if (JSON.stringify(req.session.user) == "{}") {
-		res.redirect("/login");
-	}
-};
 
 //获取用户列表
 router.get('/users', function(req, res, next) {
-	loginFilter(req, res, next);
-	res.render('showUsers', {
-		title: "用户列表"
-	});
+	if (loginFilter(req, res, next)) {
+		res.render('showUsers', {
+			title: "用户列表"
+		});
+	};
 });
 router.get('/userDetail', function(req, res, next) {
 	var user = {};
