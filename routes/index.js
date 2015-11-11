@@ -4,7 +4,8 @@ var router = express.Router();
 
 var url = require('url');
 //数据操作对象
-var User = require('../public/javascripts/user');
+//var User = require('../public/javascripts/user');
+var User = require('../public/javascripts/database');
 var log4js = require("log4js");
 log4js.configure('conf/log4js_conf.json');
 var loginLogger = log4js.getLogger("login");
@@ -16,6 +17,19 @@ function loginFilter(req, res, next) {
 		return true;
 	}
 };
+//test
+router.all('/test', function(req, res, next) {
+	console.log(req.body.uname);
+	User.find({
+		"userName": "zs",
+	}).exec(function(err, data) {
+		//		console.error(err);
+		res.json({
+			"result": data[0]._id
+		});
+	})
+});
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
