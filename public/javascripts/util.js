@@ -65,3 +65,28 @@ function setObjByProperty(item, property, value, newProp, newVal, storageType) {
 		sessionStorage.setItem(item, JSON.stringify(objList));
 	}
 };
+/**
+ * 根据id获取年龄
+ * 
+ * 
+ */
+function getAge(id) {
+    var birthday = id.substr(6, 8);
+    var year = birthday.substr(0, 4);
+    var month = birthday.substr(4, 2);
+    var day = birthday.substr(6, 2);
+//     console.log(year + "  " + month + " " + day);
+    var today = new Date()
+      , age = 0;
+    age = today.getFullYear() - year;
+    
+    if (today.getMonth() < month) {
+        age = age - 1;
+    } else {
+        if (today.getDate() < day) {
+            age = age - 1;
+        }
+    }
+    return age;
+}
+
