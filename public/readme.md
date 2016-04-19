@@ -57,5 +57,7 @@ var HTTP_LOG_FORMAT_DEV = ':method :url :status :response-time ms - :res[content
 app.use(log4js.connectLogger(loginLoger, { level: 'auto', format: HTTP_LOG_FORMAT_DEV }));
 ```
 通过这样的配置就可快速的查看登录的相关信息，其他包括退出，修改密码之类的都可以单独做logger这样就可以快速定位问题
+
 [log4js github](https://github.com/nomiddlename/log4js-node)
+
 [关于log4js更多信息](http://blog.csdn.net/heiantianshi1/article/details/43984601)
