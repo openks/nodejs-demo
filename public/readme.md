@@ -1,5 +1,7 @@
 Nodejs中使用Log4js
+
 1.先配置log4js的配置文件
+
 conf\log4js_conf.json
 ```js
 {
