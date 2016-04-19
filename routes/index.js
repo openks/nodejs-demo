@@ -9,6 +9,7 @@ var User = require('../public/javascripts/database');
 var log4js = require("log4js");
 log4js.configure('conf/log4js_conf.json');
 var loginLogger = log4js.getLogger("login");
+var apiLogger = log4js.getLogger("api");
 
 function loginFilter(req, res, next) {
 	if (JSON.stringify(req.session.user) == "{}") {
@@ -19,11 +20,10 @@ function loginFilter(req, res, next) {
 };
 //test
 router.all('/test', function(req, res, next) {
-	console.log(req.body.uname);
 	User.find({
 		"userName": "zs",
 	}).exec(function(err, data) {
-		//		console.error(err);
+		apiLogger.info("test--",data);
 		res.json({
 			"result": data[0]._id
 		});
@@ -38,7 +38,9 @@ router.get('/', function(req, res, next) {
 	});
 });
 router.get('/login', function(req, res, next) {
+	console.log("user",req.session.user);
 	if (JSON.stringify(req.session.user) == "{}") {
+		console.log("render");
 		res.render('login', {
 			title: '登陆页'
 		});

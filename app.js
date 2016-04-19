@@ -10,7 +10,7 @@ var routes = require('./routes/index');
 var log4js = require("log4js");
 console.log("__dirname",__dirname);
 log4js.configure(__dirname + '/conf/log4js_conf.json');
-var log4jslogger = log4js.getLogger("log4jsLog");
+var loginLoger = log4js.getLogger("login");
 
 //session操作
 var session = require('express-session');
@@ -37,7 +37,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 //使用log4js输出http log
-app.use(log4js.connectLogger(log4jslogger, { level: 'auto', format: ':method :url :status :response-time ms - :res[content-length]' }));
+app.use(log4js.connectLogger(loginLoger, { level: 'auto', format: ':method :url :status :response-time ms' }));
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 //app.use(logger('dev'));

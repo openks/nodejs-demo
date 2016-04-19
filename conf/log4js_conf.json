@@ -19,8 +19,8 @@
         },
         {
             "type": "file",
-            "filename": "logs/log4jsLog.log",
-            "category": "log4jsLog",
+            "filename": "logs/api.log",
+            "category": "api",
             "maxLogSize": 1048576,
             "backup": 3
         }
@@ -28,8 +28,6 @@
     "levels": {
         "login": "INFO",
         "signup": "INFO",
-        "log4jsLog": "INFO"
+        "api": "INFO"
     }
 }
-
- 
