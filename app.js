@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 //var users = require('./routes/users');
 var log4js = require("log4js");
+console.log("__dirname",__dirname);
 log4js.configure(__dirname + '/conf/log4js_conf.json');
 var log4jslogger = log4js.getLogger("log4jsLog");
 
