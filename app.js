@@ -65,11 +65,12 @@ if (app.get('env') === 'development') {
 		res.status(err.status || 500);
 		if(err.status===404){
 			res.redirect("/404.html");
+		}else{
+			res.render('error', {
+				message: err.message,
+				error: err
+			});
 		}
-		res.render('error', {
-			message: err.message,
-			error: err
-		});
 	});
 }
 

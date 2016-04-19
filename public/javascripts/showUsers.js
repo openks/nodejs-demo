@@ -16,7 +16,7 @@ $(function() {
 			data: {
 				"uname": $("#search").val(),
 			},
-			async: true, //设置为同步操作就可以给全局变量赋值成功 
+			async: true, //设置为同步操作就可以给全局变量赋值成功
 			success: function(data) {
 				//	console.log(data);
 				if (data.result.length == 0) {
@@ -45,6 +45,7 @@ $(function() {
 	$(".js-user-search-result").on("click", ".item-content", function() {
 		var id = $(this).attr("data-id");
 		var obj = getObjByProperty("users", "_id", id, "s");
+		console.log("要加载的对象",obj);
 		$("#detailPage .title,.js-show-uName").text(obj.userName);
 		$(".js-show-uSex").val(SEX[obj.gender]).attr("data-old", obj.gender);
 		$(".js-show-uBirthday").val(obj.birthday).attr("data-old", obj.birthday);
@@ -66,7 +67,7 @@ $(function() {
 	$(".user-uname-back").on("click", function() {
 		Zepto.router.back("#detailPage");
 	});
-	//用户详情页点击用户名行触发事件
+	//用户详情页点击返回按钮触发事件
 	$(".js-item-uname").on("click", function() {
 		Zepto.router.loadPage("#unamePage");
 	});
@@ -111,15 +112,25 @@ $(function() {
 		param.editType = "uInfo";
 		param.uid = uid;
 		param.birthday = $(".js-show-uBirthday").val();
-		param.gender = $(".js-show-uSex").attr("data-new");
+		param.gender = $(".js-show-uSex").attr("data-new")||$(".js-show-uSex").attr("data-old");
+		// debugger;
 		$.ajax({
 			type: "post",
 			url: "editUser",
 			dataType: 'json',
 			data: param,
-			async: true, //设置为同步操作就可以给全局变量赋值成功 
+			async: true, //设置为同步操作就可以给全局变量赋值成功
 			success: function(data) {
-				console.log(data);
+				// console.log("user-detail-success",data);
+				Zepto.toast(data.result);
+					if(data.code==0){
+						var obj = getObjByProperty("users", "_id", uid, "s");
+						obj.birthday=param.birthday;
+						obj.gender=param.gender;
+						// console.log("修改前",obj);
+						setObjByObjProperty("users", "_id", uid,obj,"s");
+						// console.log("修改后",getObjByProperty("users", "_id", uid, "s"));
+					}
 			},
 			error: function(data) {
 				console.error(data);
@@ -146,7 +157,7 @@ $(function() {
 				"editType": "uName",
 				"uname": newName
 			},
-			async: true, //设置为同步操作就可以给全局变量赋值成功 
+			async: true, //设置为同步操作就可以给全局变量赋值成功
 			success: function(data) {
 				console.log(data);
 				if (data.result == "新用户名已保存！") {
@@ -176,7 +187,8 @@ $(function() {
 			textAlign: 'center',
 			values: ['男', '女', '保密']
 		}]
-	}).picker("open").picker("close");
+	});
+	// }).picker("open").picker("close");
 	$(document).on("pageInit", "#detailPage", function(e, id, page) {
 		Zepto(".js-show-uBirthday").calendar({
 			maxDate: new Date(),
