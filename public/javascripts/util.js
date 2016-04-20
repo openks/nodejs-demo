@@ -123,3 +123,8 @@ function getAgeByBirthday(birthday) {
 	years = years < 0 ? 0 : years;
 	return years;
 }
+var util_main={};
+util_main.getAgeByBirthday=getAgeByBirthday;
+if (typeof module !== 'undefined') {
+  module.exports = util_main;
+}

@@ -6,6 +6,7 @@ var url = require('url');
 //数据操作对象
 //var User = require('../public/javascripts/user');
 var User = require('../public/javascripts/database');
+var util = require('../public/javascripts/util');
 var log4js = require("log4js");
 log4js.configure('conf/log4js_conf.json');
 var loginLogger = log4js.getLogger("login");
@@ -18,6 +19,7 @@ function loginFilter(req, res, next) {
 		return true;
 	}
 };
+
 //test
 router.all('/test', function(req, res, next) {
 	User.find({
@@ -51,12 +53,54 @@ router.get('/login', function(req, res, next) {
 //主页
 router.all('/home', function(req, res, next) {
 	if (loginFilter(req, res, next)) {
-		res.render('home', {
-			title: '用户已登录页',
-			user: req.session.user
-		});
+		User.find({
+			"_id": req.session.user._id,
+		}).exec(function(err, data) {
+			var result, code = 0;
+			if (data.length != 0) {
+				req.session.user = data[0];
+				res.render('home', {
+					title: '用户已登录页',
+					user: req.session.user
+				});
+			}
+		})
 	}
+});
 
+//修改信息
+router.all('/userInfo', function(req, res, next) {
+	if (loginFilter(req, res, next)) {
+		User.find({
+			"_id": req.session.user._id,
+		}).exec(function(err, data) {
+			var result, code = 0;
+			if (data.length != 0) {
+				req.session.user = data[0];
+				console.log("session.user",JSON.stringify(data[0]));
+				var sex=req.session.user.gender;
+				switch(sex){
+					case 0:
+						sex="男";
+						// console.log("性别男");
+						break;
+					case 1:
+						sex="女";
+							// console.log("性别nv");
+						break;
+					case 2:
+						sex="保密";
+						// console.log("性别bm");
+						break;
+				}
+				res.render('userInfo', {
+					gender:sex,
+					age:util.getAgeByBirthday(req.session.user.birthday),
+					user: req.session.user
+				});
+			}
+		})
+	}
 });
 router.all('/editPassWord', function(req, res, next) {
 	if (loginFilter(req, res, next)) {
@@ -106,7 +150,7 @@ router.all('/login2', function(req, res, next) {
 		var result, code = 0;
 		if (data.length != 0) {
 			req.session.user = data[0];
-			//			console.log(JSON.stringify(data));
+			console.log("session.user",JSON.stringify(data[0]));
 			//			result = "登陆成功！！";
 		} else {
 			result = "用户名或密码错误请重试!";
