@@ -24,8 +24,8 @@ $(function() {
 				} else {
 					for (var i = 0; i < data.result.length; i++) {
 						str += '<li class="item-content  item-link" data-id=' + data.result[i]._id + '>' +
-							'<div class="item-media"></div><div class="item-inner"><div class="item-title">用户名</div>' +
-							'<div class="item-after">' + data.result[i].userName + '</div></div></li>';
+									 '<div class="item-media"></div><div class="item-inner"><div class="item-title">用户名</div>' +
+									 '<div class="item-after">' + data.result[i].userName + '</div></div></li>';
 					}
 					$(".js-user-search-result").empty().append(str);
 					sessionStorage.setItem("users", JSON.stringify(data.result));
@@ -45,7 +45,7 @@ $(function() {
 	$(".js-user-search-result").on("click", ".item-content", function() {
 		var id = $(this).attr("data-id");
 		var obj = getObjByProperty("users", "_id", id, "s");
-		console.log("要加载的对象",obj);
+		// console.log("要加载的对象",obj);
 		$("#detailPage .title,.js-show-uName").text(obj.userName);
 		$(".js-show-uSex").val(SEX[obj.gender]).attr("data-old", obj.gender);
 		$(".js-show-uBirthday").val(obj.birthday).attr("data-old", obj.birthday);
@@ -67,7 +67,7 @@ $(function() {
 	$(".user-uname-back").on("click", function() {
 		Zepto.router.back("#detailPage");
 	});
-	//用户详情页点击返回按钮触发事件
+	//用户详情页用户名所在行点击触发事件
 	$(".js-item-uname").on("click", function() {
 		Zepto.router.loadPage("#unamePage");
 	});
@@ -123,14 +123,14 @@ $(function() {
 			success: function(data) {
 				// console.log("user-detail-success",data);
 				Zepto.toast(data.result);
-					if(data.code==0){
-						var obj = getObjByProperty("users", "_id", uid, "s");
-						obj.birthday=param.birthday;
-						obj.gender=param.gender;
-						// console.log("修改前",obj);
-						setObjByObjProperty("users", "_id", uid,obj,"s");
-						// console.log("修改后",getObjByProperty("users", "_id", uid, "s"));
-					}
+				if(data.code==0){
+					var obj = getObjByProperty("users", "_id", uid, "s");
+					obj.birthday=param.birthday;
+					obj.gender=param.gender;
+					// console.log("修改前",obj);
+					setObjByObjProperty("users", "_id", uid,obj,"s");
+					// console.log("修改后",getObjByProperty("users", "_id", uid, "s"));
+				}
 			},
 			error: function(data) {
 				console.error(data);
@@ -143,7 +143,7 @@ $(function() {
 	//用户名修改完成后保存
 	$("#bt-edit-uname").on("click", function() {
 		var newName = $("#uname-change").val(),
-			uid = $("#uname-change").attr("data-uid");
+		uid = $("#uname-change").attr("data-uid");
 		if (newName == $("#uname-change").attr("data-old")) {
 			Zepto.toast("用户名修改成功！");
 			return;
@@ -178,34 +178,35 @@ $(function() {
 	//picker
 	Zepto(".js-show-uSex").picker({
 		toolbarTemplate: '<header class="bar bar-nav">\
-      <button class="button button-link pull-right close-picker">\
-      确定\
-      </button>\
-      <h1 class="title">请选择您的性别</h1>\
-      </header>',
+		<button class="button button-link pull-right close-picker">\
+		确定\
+		</button>\
+		<h1 class="title">请选择您的性别</h1>\
+		</header>',
 		cols: [{
 			textAlign: 'center',
 			values: ['男', '女', '保密']
 		}]
-	});
-	// }).picker("open").picker("close");
+	}).picker("open").picker("close");
+
 	$(document).on("pageInit", "#detailPage", function(e, id, page) {
 		Zepto(".js-show-uBirthday").calendar({
 			maxDate: new Date(),
 			value: [$(".js-show-uBirthday").val()]
 		});
+		console.log("加载完成后性别",$(".js-show-uSex").val());
 		Zepto(".js-show-uSex").picker("setValue", [$(".js-show-uSex").val()]);
 	});
-	$(document).on("pageAnimationEnd", "#detailPage", function(e, id, page) {
-		//		console.log("hide!!!!!!!!!!");
-		Zepto(".js-show-uBirthday").off("click");
-	});
+	// $(document).on("pageAnimationEnd", "#detailPage", function(e, id, page) {
+	// 	//		console.log("hide!!!!!!!!!!");
+	// 	Zepto(".js-show-uBirthday").off("click");
+	// });
 	//	Zepto.init();
 });
 /**
- * 根据年龄字符串获取年龄值
- * @param {Object} dateStr "2010-01-01"
- */
+* 根据年龄字符串获取年龄值
+* @param {Object} dateStr "2010-01-01"
+*/
 function getYears(dateStr) {
 	var now = new Date();
 	var old = new Date(dateStr);
