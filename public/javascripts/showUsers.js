@@ -125,9 +125,7 @@ $(function() {
 				console.error(data);
 			}
 		});
-		$(this).css({
-			"display": "none"
-		})
+		$(this).addClass("hide");
 	});
 	//用户名修改完成后保存
 	$("#bt-edit-uname").on("click", function() {
@@ -188,6 +186,8 @@ $(function() {
 		});
 		// console.log("加载完成后性别",$(".js-show-uSex").val());
 		Zepto(".js-show-uSex").picker("setValue", [$(".js-show-uSex").val()]);
+		$(".js-show-uSex").removeAttr("data-change").removeAttr("data-new");
+		editBtStatus();
 	});
 	$(document).on("pageAnimationEnd", "#detailPage", function(e, id, page) {
 				// console.log("pageAnimationEnd");
@@ -201,6 +201,8 @@ $(function() {
 			value: [$(".js-show-uBirthday").val()]
 		});
 		Zepto(".js-show-uSex").picker("setValue", [$(".js-show-uSex").val()]);
+		$(".js-show-uSex").removeAttr("data-change").removeAttr("data-new");
+		editBtStatus();
 	}
 	if(location.href.indexOf("unamePage")>-1){
 		var _id = sessionStorage.getItem("currentId");
@@ -222,9 +224,6 @@ function fillInfo_user(id){
 	$("#uname-change").val(obj.userName).attr({
 		"data-uid": id,
 		"data-old": obj.userName
-	});
-	$(".user-detail-edit").css({
-		"display": "none"
 	});
 }
 
@@ -249,13 +248,9 @@ function getYears(dateStr) {
 
 function editBtStatus() {
 	if ($("[data-change='true']").length > 0) {
-		$(".user-detail-edit").css({
-			"display": "block"
-		});
+		$(".user-detail-edit").removeClass("hide");
 	} else {
-		$(".user-detail-edit").css({
-			"display": "none"
-		});
+		$(".user-detail-edit").addClass("hide");
 	}
 }
 

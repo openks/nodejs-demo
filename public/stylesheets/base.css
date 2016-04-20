@@ -8,11 +8,13 @@
 }
 .swiper-slide img {
 	width: 100%;
+	height: auto;
 }
 
 .swiper-container {
 	padding-bottom: 0;
-	height: 10rem;
+	/*height: 10rem;*/
+	height: auto;
 }
 .content-ul {
 	list-style: none;
@@ -31,7 +33,7 @@ li.con-li {
 	width: 33%;
 	text-align: center;
 	/* background-color: yellow; */
-	padding: 0.4rem 0.5rem;
+	padding: 1.5rem 0;
 	float: left;
 	font-size: 2rem;
 }
@@ -46,14 +48,16 @@ li.con-li:nth-child(3n-1) {
 	text-decoration:none;
 }
 .con-li-text {
-	font-size: 0.7rem;
+	font-size: 1rem;
 	font-weight: 600;
 }
 
 .user-detail-edit {
-    display: none;
+    display: block;
 }
-
+.hide{
+	display: none!important;
+}
 .fa {
     color: #5A5656;
 }
