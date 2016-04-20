@@ -44,28 +44,17 @@ $(function() {
 	//用户列表页点击用户所在行触发事件
 	$(".js-user-search-result").on("click", ".item-content", function() {
 		var id = $(this).attr("data-id");
-		var obj = getObjByProperty("users", "_id", id, "s");
+		sessionStorage.setItem("currentId",id);
 		// console.log("要加载的对象",obj);
-		$("#detailPage .title,.js-show-uName").text(obj.userName);
-		$(".js-show-uSex").val(SEX[obj.gender]).attr("data-old", obj.gender);
-		$(".js-show-uBirthday").val(obj.birthday).attr("data-old", obj.birthday);
-		$(".js-show-uAge").val(getYears(obj.birthday));
-		$("#uname-change").val(obj.userName).attr({
-			"data-uid": id,
-			"data-old": obj.userName
-		});
-		$(".user-detail-edit").css({
-			"display": "none"
-		});
 		Zepto.router.loadPage("#detailPage");
 	});
 	//用户详情页返回按钮点击事件触发
 	$(".user-detail-back").on("click", function() {
-		Zepto.router.back("#usersPage");
+		Zepto.router.loadPage("#usersPage");
 	});
 	//用户名修改页返回按钮点击事件触发
 	$(".user-uname-back").on("click", function() {
-		Zepto.router.back("#detailPage");
+		Zepto.router.loadPage("#detailPage");
 	});
 	//用户详情页用户名所在行点击触发事件
 	$(".js-item-uname").on("click", function() {
@@ -190,19 +179,55 @@ $(function() {
 	}).picker("open").picker("close");
 
 	$(document).on("pageInit", "#detailPage", function(e, id, page) {
+		// console.log("pageInit..");
+		var _id = sessionStorage.getItem("currentId");
+		fillInfo_user(_id);
 		Zepto(".js-show-uBirthday").calendar({
 			maxDate: new Date(),
 			value: [$(".js-show-uBirthday").val()]
 		});
-		console.log("加载完成后性别",$(".js-show-uSex").val());
+		// console.log("加载完成后性别",$(".js-show-uSex").val());
 		Zepto(".js-show-uSex").picker("setValue", [$(".js-show-uSex").val()]);
 	});
-	// $(document).on("pageAnimationEnd", "#detailPage", function(e, id, page) {
-	// 	//		console.log("hide!!!!!!!!!!");
-	// 	Zepto(".js-show-uBirthday").off("click");
-	// });
+	$(document).on("pageAnimationEnd", "#detailPage", function(e, id, page) {
+				// console.log("pageAnimationEnd");
+	});
+	//如果在子页面刷新
+	if(location.href.indexOf("detailPage")>-1){
+		var _id = sessionStorage.getItem("currentId");
+		fillInfo_user(_id);
+		Zepto(".js-show-uBirthday").calendar({
+			maxDate: new Date(),
+			value: [$(".js-show-uBirthday").val()]
+		});
+		Zepto(".js-show-uSex").picker("setValue", [$(".js-show-uSex").val()]);
+	}
+	if(location.href.indexOf("unamePage")>-1){
+		var _id = sessionStorage.getItem("currentId");
+		var obj = getObjByProperty("users", "_id", _id, "s");
+		$("#uname-change").val(obj.userName).attr({
+			"data-uid": id,
+			"data-old": obj.userName
+		});
+	}
 	//	Zepto.init();
 });
+
+function fillInfo_user(id){
+	var obj = getObjByProperty("users", "_id", id, "s");
+	$("#detailPage .title,.js-show-uName").text(obj.userName);
+	$(".js-show-uSex").val(SEX[obj.gender]).attr("data-old", obj.gender);
+	$(".js-show-uBirthday").val(obj.birthday).attr("data-old", obj.birthday);
+	$(".js-show-uAge").val(getYears(obj.birthday));
+	$("#uname-change").val(obj.userName).attr({
+		"data-uid": id,
+		"data-old": obj.userName
+	});
+	$(".user-detail-edit").css({
+		"display": "none"
+	});
+}
+
 /**
 * 根据年龄字符串获取年龄值
 * @param {Object} dateStr "2010-01-01"
