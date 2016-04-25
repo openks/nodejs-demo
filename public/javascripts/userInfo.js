@@ -7,7 +7,22 @@ $(function() {
   $(".js-item-uname").on("click",function(){
     Zepto.router.loadPage("#unamePage");
   });
-
+  //用户详情页点击性别行触发事件
+  $(".js-item-uSex").on("click", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!e.target.classList.contains("js-show-uSex")) {
+      Zepto(".js-show-uSex").triggerHandler("click");
+    }
+  });
+  //用户详情页点击生日行触发事件
+	$(".js-item-uBirthday").on("click", function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		if (!e.target.classList.contains("js-show-uBirthday")) {
+			Zepto(".js-show-uBirthday").triggerHandler("click");
+		}
+	});
   var usex=$(".js-show-uSex").val();
   //picker
   Zepto(".js-show-uSex").picker({

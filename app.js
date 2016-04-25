@@ -10,7 +10,8 @@ var routes = require('./routes/index');
 var log4js = require("log4js");
 console.log("__dirname",__dirname);
 log4js.configure(__dirname + '/conf/log4js_conf.json');
-var loginLoger = log4js.getLogger("login");
+//使用默认logger
+var loginLoger = log4js.getLogger();
 
 //session操作
 var session = require('express-session');

@@ -40,9 +40,9 @@ router.get('/', function(req, res, next) {
 	});
 });
 router.get('/login', function(req, res, next) {
-	console.log("user",req.session.user);
+	// console.log("user",req.session.user);
 	if (JSON.stringify(req.session.user) == "{}") {
-		console.log("render");
+		// console.log("render");
 		res.render('login', {
 			title: '登陆页'
 		});
@@ -127,6 +127,7 @@ router.all('/logout', function(req, res, next) {
 	req.session.destroy(function(err) {
 		// cannot access session here
 	});
+	loginLogger.info("--userName:" + req.body.uname + "退出了");
 	res.redirect("/login");
 });
 
@@ -148,7 +149,7 @@ router.all('/login2', function(req, res, next) {
 			result = "用户名或密码错误请重试!";
 			code = "E001";
 		}
-		loginLogger.info("--userName:" + req.body.uname + "--" + result);
+		loginLogger.info("--userName:" + req.body.uname + "登陆了");
 		res.json({
 			"result": result,
 			"code": code
